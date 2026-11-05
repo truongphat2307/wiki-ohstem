@@ -35,5 +35,7 @@ export default {
   "pcf_rtc_8563": "32. Module thời gian thực RTC PCF8563 (Real-Time Clock)",
   "yolobit_ir_blaster": "33. Module IR Blaster (Hồng ngoại phát tín hiệu)",
   "veml6040": "34. Module cảm biến màu VEML6040",
-  "bmp280_yolobit": "35. Module cảm biến môi trường BMP280"
+  "bmp280_yolobit": "35. Module cảm biến môi trường BMP280",
+  "ph": "36. Cảm biến pH",
+  "tds": "37. Cảm biến TDS"
 }
