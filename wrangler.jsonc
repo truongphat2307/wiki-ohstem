@@ -1,0 +1,20 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "ohstem-wiki",
+	"main": ".open-next/worker.js",
+	"compatibility_date": "2026-10-01",
+	"compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+	"assets": {
+		"directory": ".open-next/assets",
+		"binding": "ASSETS"
+	},
+	"observability": {
+		"enabled": true
+	},
+	// Non-secret settings. Secrets (API keys, JWT_SECRET, webhook secret) are set with
+	// `npx wrangler secret put <NAME>`, see README "Deploy lên Cloudflare".
+	"vars": {
+		"MINIMAX_MODEL": "MiniMax-M2.5",
+		"GEMINI_MODEL": "gemini-2.5-flash"
+	}
+}

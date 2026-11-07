@@ -1,4 +1,5 @@
 import nextra from 'nextra'
+import { PHASE_DEVELOPMENT_SERVER } from 'next/constants.js'
 
 const withNextra = nextra({
   // Use content directory convention for MDX files
@@ -6,35 +7,40 @@ const withNextra = nextra({
 
   // Keep MDX image paths as plain strings instead of webpack static imports.
   // With staticImage enabled, Nextra turns every `![](/images/...)` into a static
-  // import, which makes it render through next/image — that burns Vercel Image
-  // Optimization transformations and duplicates ~485MB of images into
+  // import, which makes it render through next/image — that needs an image
+  // optimization service and duplicates ~485MB of images into
   // .next/static/media. Images are served straight from /public instead.
   staticImage: false,
 })
 
-// Vercel serves everything in /public with `max-age=0, must-revalidate` because
-// the filenames are not content-hashed, so the edge revalidates against the
-// origin constantly — that is what drives Fast Origin Transfer. Docs assets and
-// pages only change on deploy, and a deploy purges the edge cache, so the edge
-// can hold them for a long time. Browsers keep a shorter TTL so a replaced file
-// under the same name still shows up within the day.
-const EDGE_CACHED_ASSET = 'public, max-age=3600, s-maxage=31536000, stale-while-revalidate=86400'
+// Files under /public (images, 3D models) are served by Cloudflare Workers
+// static assets and get their cache headers from public/_headers. The headers
+// below only apply to responses the Worker renders (the docs pages).
+// Pages only change on deploy, so Cloudflare's edge may hold them for a day;
+// browsers always revalidate.
 const EDGE_CACHED_PAGE = 'public, max-age=0, s-maxage=86400, stale-while-revalidate=604800'
 
-export default withNextra({
+// The admin UI, its APIs, Keystatic and the middleware guarding them edit files
+// on disk, so they only work on a local `npm run dev`. Their route files use the
+// `.admin.js` / `.admin.jsx` extension and are only picked up by the dev server;
+// production builds (Cloudflare) leave them out entirely.
+const BASE_PAGE_EXTENSIONS = ['tsx', 'ts', 'jsx', 'js']
+const ADMIN_PAGE_EXTENSIONS = ['admin.jsx', 'admin.js']
+
+export default (phase) => withNextra({
   reactStrictMode: true,
+  pageExtensions:
+    phase === PHASE_DEVELOPMENT_SERVER
+      ? [...BASE_PAGE_EXTENSIONS, ...ADMIN_PAGE_EXTENSIONS]
+      : BASE_PAGE_EXTENSIONS,
   outputFileTracingExcludes: {
     '*': ['public/**/*'],
   },
   async headers() {
     return [
-      { source: '/images/:path*', headers: [{ key: 'Cache-Control', value: EDGE_CACHED_ASSET }] },
-      { source: '/models/:path*', headers: [{ key: 'Cache-Control', value: EDGE_CACHED_ASSET }] },
       {
-        // Docs pages and their RSC payloads. Serving these from the edge keeps
-        // sidebar link prefetches from hitting the prerender cache, which is
-        // what every ISR read is. Excludes the API, the admin UI, the CMS and
-        // the asset folders handled above.
+        // Docs pages and their RSC payloads. Excludes the API, the admin UI,
+        // the CMS and the asset folders handled by public/_headers.
         source: '/((?!api/|admin|keystatic|images/|models/|_next/).*)',
         headers: [{ key: 'Cache-Control', value: EDGE_CACHED_PAGE }],
       },

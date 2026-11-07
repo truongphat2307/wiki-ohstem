@@ -1,5 +1,5 @@
 import { GoogleGenAI, createPartFromBase64 } from '@google/genai'
-import { searchWikiContext } from '../../../../lib/wiki-context.js'
+import { loadWikiContext, searchWikiContext } from '../../../../lib/wiki-context.js'
 import {
     createAiChatEntry,
     sendAiChatEntryToSheet,
@@ -1180,6 +1180,8 @@ Anh duoc gui kem trong du lieu base64 sau day:
 
 export async function POST(request) {
     try {
+        await loadWikiContext()
+
         const {
             question,
             history = [],
