@@ -10,11 +10,5 @@
 	},
 	"observability": {
 		"enabled": true
-	},
-	// Non-secret settings. Secrets (API keys, JWT_SECRET, webhook secret) are set with
-	// `npx wrangler secret put <NAME>`, see README "Deploy lên Cloudflare".
-	"vars": {
-		"MINIMAX_MODEL": "MiniMax-M2.5",
-		"GEMINI_MODEL": "gemini-2.5-flash"
 	}
 }

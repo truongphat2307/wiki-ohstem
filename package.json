@@ -2,12 +2,9 @@
   "name": "ohstem-wiki",
   "version": "1.0.0",
   "private": true,
-  "description": "OhStem Wiki Hub - Nextra 4 + MiniMax AI Q&A, hosted on Cloudflare Workers",
+  "description": "OhStem Wiki Hub - Nextra 4, hosted on Cloudflare Workers",
   "scripts": {
-    "wiki-index": "node scripts/build-wiki-index.mjs",
-    "predev": "npm run wiki-index",
     "dev": "next",
-    "prebuild": "npm run wiki-index",
     "build": "next build",
     "start": "next start",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
@@ -18,7 +15,6 @@
   "dependencies": {
     "@babylonjs/core": "^8.55.3",
     "@babylonjs/loaders": "^8.55.3",
-    "@google/genai": "^1.0.0",
     "@keystatic/core": "^0.5.48",
     "@keystatic/next": "^5.0.4",
     "bcryptjs": "^3.0.3",

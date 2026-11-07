@@ -1,8 +1,0 @@
-# Secrets for `npm run preview` (local Cloudflare Worker).
-# Copy to .dev.vars and fill in. On Cloudflare, set each one with:
-#   npx wrangler secret put <NAME>
-NEXTJS_ENV=development
-MINIMAX_API_KEY=
-GEMINI_API_KEY=
-GOOGLE_SHEETS_WEBHOOK_URL=
-GOOGLE_SHEETS_WEBHOOK_SECRET=

@@ -1,4 +1,3 @@
-import AskAI from '../components/AskAI'
 import GaPageViews from '../components/GaPageViews'
 import './globals.css'
 
@@ -62,7 +61,6 @@ gtag('config', '${GA_ID}', { send_page_view: false });`,
             </head>
             <body>
                 {children}
-                <AskAI />
                 <GaPageViews />
             </body>
         </html>

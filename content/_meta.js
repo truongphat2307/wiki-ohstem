@@ -56,8 +56,5 @@ export default {
   "api": { "display": "hidden" },
   "app": { "display": "hidden" },
   "board": { "display": "hidden" },
-  "yolobit_v1": { "display": "hidden" },
-  // /admin only exists on the local dev server (see next.config.mjs), and Nextra
-  // rejects a _meta key with no matching page, so hide it only there.
-  ...(process.env.NODE_ENV === 'development' ? { "admin": { "display": "hidden" } } : {})
+  "yolobit_v1": { "display": "hidden" }
 }
