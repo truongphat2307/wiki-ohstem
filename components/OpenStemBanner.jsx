@@ -11,11 +11,18 @@ export default function OpenStemBanner({
                 <p className="ohs-lms-banner__title">{title}</p>
                 <p className="ohs-lms-banner__desc">{description}</p>
             </div>
+            {/*
+              ohs-link.js (app/layout.jsx) appends ohs_aid + utm_* to this href
+              before React hydrates, so the server and client href differ on
+              purpose. React keeps the decorated href in the DOM; this only
+              silences the hydration warning for this element.
+            */}
             <a
                 className="ohs-lms-banner__cta"
                 href={href}
                 target="_blank"
                 rel="noopener"
+                suppressHydrationWarning
             >
                 {cta}
                 <span aria-hidden="true">→</span>
